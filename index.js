@@ -1,9 +1,10 @@
 /*
 author: Layer <gai00layer@gmail.com>
-version: 1.0.0
+version: 1.0.1
 change logs:
+  1.0.1
+    直接轉送store全部的東西
   1.0.0
     轉送store
 */
-import {Store} from './store';
-export default Store;
+export * from './store';
