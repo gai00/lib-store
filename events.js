@@ -48,6 +48,8 @@ export class Events {
   // 建構子
   constructor(eventsName) {
     this.eventsName = eventsName;
+    
+    
   }
   
   // auto increment
@@ -103,6 +105,10 @@ export class Events {
   
   // 移除事件
   // 原本的del
+  del(id) {
+    console.log('del method is deprecated. (still support for short time.)');
+    return this.off(id);
+  }
   off(id) {
     var found = false;
     // 找到ids裡面的指定id的wrap
