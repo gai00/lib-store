@@ -1,7 +1,9 @@
 /*
 author: Layer <gai00layer@gmail.com>
-version: 1.0.5
+version: 1.0.6
 change logs:
+  1.0.6
+    增加store.getStore()，來讓agent可以快速取得自己的store。
   1.0.5
     修復store.agent的namespace問題，還有將store的storePath的起點設為空字串。
   1.0.4
@@ -36,7 +38,7 @@ store.getAgent('a.b.c') === a.getAgent('b.c');
 */
 export class Store {
   // 版本號
-  VERSION = '1.0.5';
+  VERSION = '1.0.6';
   
   // static properties
   static storeNamespaces = {};
@@ -207,6 +209,12 @@ export class Store {
     }
   }
   
+  // update 20170216: 取得store
+  getStore() {
+    return Store.getStore(this.namespace);
+  }
+  
+  // 取得agent
   getAgent(agentPath) {
     // update 20160518: 增加預設值為空字串，回傳自己
     agentPath = agentPath || '';
