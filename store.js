@@ -1,7 +1,9 @@
 /*
 author: Layer <gai00layer@gmail.com>
-version: 1.0.4
+version: 1.0.5
 change logs:
+  1.0.5
+    修復store.agent的namespace問題，還有將store的storePath的起點設為空字串。
   1.0.4
     增加版本號，修復event的namespace問題。
   1.0.3
@@ -34,7 +36,7 @@ store.getAgent('a.b.c') === a.getAgent('b.c');
 */
 export class Store {
   // 版本號
-  VERSION = '1.0.4';
+  VERSION = '1.0.5';
   
   // static properties
   static storeNamespaces = {};
@@ -43,7 +45,9 @@ export class Store {
   static getStore(namespace) {
     namespace = namespace || 'store';
     if(!this.storeNamespaces[namespace]) {
-      let newStore = new this({}, namespace);
+      // update 20170216: 這邊預設root路徑為空字串
+      let newStore = new this({});
+      // let newStore = new this({}, namespace);
       newStore.namespace = namespace;
       this.storeNamespaces[namespace] = newStore;
     }
@@ -234,8 +238,11 @@ export class Store {
         agentData = agentData || {};
         // 設定資料
         targetAgent.set(part, agentData);
-        // 設定agent
-        this.access(targetAgent.agents, part, agent = new Store(agentData, newAgentPath));
+        // update 20170216: 設定agent並設定namespace
+        agent = new Store(agentData, newAgentPath);
+        agent.namespace = this.namespace;
+        
+        this.access(targetAgent.agents, part, agent);
       }
       
       targetAgent = agent;
