@@ -1,7 +1,10 @@
 /*
 author: Layer <gai00layer@gmail.com>
-version: 1.0.2
+version: 1.1.0
 change logs:
+  1.1.0
+    移除del，並修正之前移除事件使用del的錯誤。現在已經可以正常被移除事件了。
+    修改正確的版本號。
   1.0.2
     將del改為off，預防被誤會為資料刪除指令
   1.0.1
@@ -17,7 +20,7 @@ change logs:
 */
 export class Events {
   // 版本號
-  VERSION = '1.0.1';
+  VERSION = '1.1.0';
   
   // static properties
   static eventNamespaces = {};
@@ -104,11 +107,6 @@ export class Events {
   }
   
   // 移除事件
-  // 原本的del
-  del(id) {
-    console.log('del method is deprecated. (still support for short time.)');
-    return this.off(id);
-  }
   off(id) {
     var found = false;
     // 找到ids裡面的指定id的wrap
@@ -119,7 +117,7 @@ export class Events {
         found = true;
         
         // 找到之後，移除指定事件清單裡面的該項目
-        let eventIndex = this.events[wrap.eventName].indexOf(wrap)
+        let eventIndex = this.events[wrap.eventName].indexOf(wrap);
         if(~eventIndex) {
           this.events[wrap.eventName].splice(eventIndex, 1);
         }
@@ -146,7 +144,7 @@ export class Events {
     
     // 移除需要被移除的event
     for(let eventId of shouldBeDel) {
-      this.del(eventId);
+      this.off(eventId);
     }
   }
   
