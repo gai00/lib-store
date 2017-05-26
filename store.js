@@ -2,6 +2,9 @@
 author: Layer <gai00layer@gmail.com>
 version: 1.0.6
 change logs:
+  1.0.7
+    store.set現在會直接回傳第1層資料好方便setState使用。
+    update先拉出來，之後再改為import的。
   1.0.6
     增加store.getStore()，來讓agent可以快速取得自己的store。
   1.0.5
@@ -18,6 +21,8 @@ change logs:
 
 // update用
 import React from 'react';
+
+const update = React.addons.update;
 
 import {Events} from './events';
 /*
@@ -38,7 +43,7 @@ store.getAgent('a.b.c') === a.getAgent('b.c');
 */
 export class Store {
   // 版本號
-  VERSION = '1.0.6';
+  VERSION = '1.0.7';
   
   // static properties
   static storeNamespaces = {};
@@ -150,13 +155,22 @@ export class Store {
     var current = updateData;
     var pathParts = dataPath.split('.');
     
-    // 有路徑的話
+    // 沒路徑的話
     if(!dataPath) {
       updateData = data;
     }
-    // 沒路徑
+    // 有路徑
     else {
-      for(let index = 0; index < pathParts.length; index += 1) {
+      let firstPath = null;
+      // 只取第一層
+      for(let index = 0; index < Math.min(1, pathParts.length); index += 1) {
+        let part = pathParts[index];
+        if(part in this.storeData) {
+          updateData[part] = this.storeData[part];
+        }
+        
+        // 原code先留著
+        /*
         let part = pathParts[index];
         
         // 不是最後的話
@@ -166,6 +180,7 @@ export class Store {
         else {
           current[part] = data;
         }
+        */
       }
     }
     
@@ -176,7 +191,7 @@ export class Store {
   update(updateQuery) {
     var data = this.get();
     
-    data = React.addons.update(data, updateQuery);
+    data = update(data, updateQuery);
     
     // 分別設定到各欄位
     var isGlobal = false;
