@@ -1,7 +1,9 @@
 /*
 author: Layer <gai00layer@gmail.com>
-version: 1.0.6
+version: 1.0.8
 change logs:
+  1.0.8
+    store改用immutability-helper來update。
   1.0.7
     store.set現在會直接回傳第1層資料好方便setState使用。
     update先拉出來，之後再改為import的。
@@ -20,9 +22,7 @@ change logs:
 */
 
 // update用
-import React from 'react';
-
-const update = React.addons.update;
+import update from 'immutability-helper';
 
 import {Events} from './events';
 /*
@@ -43,7 +43,7 @@ store.getAgent('a.b.c') === a.getAgent('b.c');
 */
 export class Store {
   // 版本號
-  VERSION = '1.0.7';
+  VERSION = '1.0.8';
   
   // static properties
   static storeNamespaces = {};
